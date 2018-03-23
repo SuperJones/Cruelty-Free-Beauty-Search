@@ -1,7 +1,8 @@
 # Cruelty-Free Beauty Search
 
 ## Build Status
- <!-- TODO: Add Travis CI -->
+ Master:
+ [![Build Status](https://travis-ci.org/SuperJones/Cruelty-Free-Beauty-Search.svg?branch=master)](https://travis-ci.org/SuperJones/Cruelty-Free-Beauty-Search)
 
 ## Project Information
 
