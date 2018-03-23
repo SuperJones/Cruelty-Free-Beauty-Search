@@ -48,7 +48,7 @@ group :test do
   gem 'capybara-webkit', '~> 1.15.0' # (Critical) A Capybara driver for headless Webkit to test JavaScript web apps
   gem 'database_cleaner', '~> 1.6.2' # (Critical) Ensures a clean state for testing
   gem 'faker' # (Critical) Used by tests to generate random content
-  gem 'shoulda-matchers', '~> 0.54.0' # (Critical) Adds extra matchers for tests
+  gem 'shoulda-matchers', '~> 3.1.2' # (Critical) Adds extra matchers for tests
 end
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
