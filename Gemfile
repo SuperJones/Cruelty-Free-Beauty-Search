@@ -10,7 +10,7 @@ source 'https://rubygems.org'
 # =============================================================================
 
 git_source(:github) do |repo_name|
-  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?("/")
+  repo_name = "#{repo_name}/#{repo_name}" unless repo_name.include?('/')
   "https://github.com/#{repo_name}.git"
 end
 
@@ -38,10 +38,10 @@ group :development do
   gem 'listen', '>= 3.0.5', '< 3.2' # (Expected) listens to file modifications and notifies you about the changes.
   gem 'rubocop', '~> 0.54.0', require: false
   gem 'spring', require: false # (Optional) Adds the Spring preloader to speed up devlopment/testing
-  gem 'spring-watcher-listen', '~> 2.0.0' #(Expected) makes Spring watch the filesystem for changes using Listen rather than by polling the filesystem.
-  gem 'web-console', '>= 3.3.0' # (Optional) Access an IRB console on exception pages or by using <%= console %> anywhere in the code.
+  gem 'spring-watcher-listen', '~> 2.0.0' # (Expected) makes Spring watch the filesystem for changes using Listen.
+  # (Optional) Access an IRB console on exception pages or by use <%= console %> anywhere in the code.
+  gem 'web-console', '>= 3.3.0'
 end
-
 group :test do
   gem 'capybara', '~> 2.13' # (Critical) Acceptance testing framework that simulates user interactions in a web browser
   gem 'capybara-screenshot', '~> 1.0.18' # (Expected) Take a picture of the browser when capybara has an error

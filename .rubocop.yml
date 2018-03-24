@@ -1,2 +1,191 @@
 AllCops:
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
+  Exclude:
+    - db/schema.rb
+    - spec/dummy/db/schema.rb
+    - vendor/**/*
+
+Documentation:
+  Enabled: false
+
+#=============================== metrics =========================================
+# Metrics/BlockLength checks for long blocks and has a default of 25 (not counting comment lines).
+Metrics/BlockLength:
+  Exclude:
+    - spec/**/* # FactoryBot blocks are typically very large
+    - config/routes.rb # routes.rb is a single large block by definition
+    - db/migrate/**/* # The migrate folder frequently has large blocks
+
+# Metrics/ClassLength ensures classes stay small (within a file).
+Metrics/ClassLength:
+  Max: 200 # default is 100
+
+# Metrics/LineLength ensures lines don't exceed a given limmit.
+# 80 is too restrictive:
+# 1. it doesn't take advantage of wide screens
+# 2. it forces you to create more lines in a class which may cause issues with rubocops Max ClassLength
+Metrics/LineLength:
+  Max: 130 # default is 80
+
+# Metrics/MethodLength ensures methods stay small.
+Metrics/MethodLength:
+  Exclude:
+    - db/migrate/**/*
+  Max: 15 # default is 10
+
+# Metrics/ModuleLength ensures modules stay small (within a file).
+Metrics/ModuleLength:
+  Max: 200 # default is 100
+
+# Metrics/ParameterLists checks the number of parameters in a method definition.
+# A large number of parameters is considered a code smell,
+# however, 5 is too restrictive.
+Metrics/ParameterLists:
+  Max: 7 # default is 5
+
+#=============================== naming =========================================
+# Naming/PredicateName checks if method names start with is_, has_, have_ etc. and suggests removing predicate.
+# This app chooses to allow predicates as they are acceptable in many other languages and they
+# aid in readability and convey method meaning better.
+Naming/PredicateName:
+  Enabled: false
+
+#=============================== rails =========================================
+Rails:
+  Enabled: true
+
+# Rails/FilePath rubocop and the ruby style guide lack justification for this cop
+Rails/FilePath:
+  Enabled: false
+
+# Rails/Output suggests Rails developers use the logger instead of writing to the console.
+# Changing enabled to false so that developer can decide
+Rails/Output:
+  Enabled: false
+
+# Rails/UnknownEnv looks for undefined environments.
+# Rails/UnknownEnv:
+#   Environments:
+#     - production
+#     - development
+#     - test
+#     - staging
+#     - preview
+
+# =============================== style =========================================
+# Style/ClassAndModuleChildren checks how classes and modules are defined.
+# rubocop prefers nested by default but Rails uses compact.
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+# Style/EmptyMethod checks hwo empty methods are formatted
+# rubocop uses compact (def foo; end), but expanded is preferred.
+Style/EmptyMethod:
+  EnforcedStyle: expanded
+
+# Style/ExpandPathArguments enforces the optimal use of expand_path
+# It recommends expand_path("..", __dir__) over
+# expand_path("..", __FILE__)
+Style/ExpandPathArguments:
+  # Ignore 3rd party files that use older technique.
+  Exclude:
+    - bin/bundle
+    - bin/rspec
+    - bin/setup
+    - bin/update
+    - spec/rails_helper.rb
+
+# Style/FrozenStringLiteralComment checks if `# frozen_string_literal: true` is present at the top of Ruby files.
+# Frozen strings were added in Ruby 2.3 and may become default in later versions.
+# This cop encourages people to migrate now, but some gems still use old ways.
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+# Style/HashSyntax checks how hashes are created. There are many ways to create a hash and they all have valid use cases.
+# Hard to enforce strategy
+Style/HashSyntax:
+  Enabled: false
+
+# Style/MixinUsage ensures "include" statements do not appear in the global namespace
+# Some 3rd Party files violate this so the are excluded from cop
+Style/MixinUsage:
+  Exclude:
+    - bin/update
+    - bin/setup
+    - spec/dummy/bin/update
+    - spec/dummy/bin/setup
+
+# Style/PreferredHashMethods checks if hash methods like 'has_key?' or 'has_value?' are called,
+# then recommends they be switched to 'key?' and 'value?'
+# For consistency with Name/PredicateName cop disabling, we like to be more verbose and use 'has_key?'
+Style/PreferredHashMethods:
+  EnforcedStyle: verbose
+
+# Style/SingleLineBlockParams requires parameters to have standard names in blocks.
+# rubocop doesn't like [1, 2, 3].inject(0) { |sum, value| sum + value }
+# and prefers [1, 2, 3].inject(0) { |acc, elem| acc + elem }
+# "acc" means "acc"umulator and "elem" means "elem"ent.
+# It standardizes but decreases readability
+Style/SingleLineBlockParams:
+  Enabled: false
+
+# Style/StderrPuts suggests using 'warn' over '$stderr.puts'. Some 3rd party files violate this so they can be ignored.
+Style/StderrPuts:
+  Exclude:
+    - bin/yarn
+    - spec/dummy/bin/yarn
+
+# Style/FormatStringToken temporarily disabled. Last checked rubocp had bugs causing false positives.
+Style/FormatStringToken:
+  Enabled: false
+
+# Style/SymbolArray checks if %i or %I are used to create symbol arrays.
+# Rubocop says: Good is %i[foo bar] vs Bad is [:foo, :bar], developer should choose
+Style/SymbolArray:
+  Enabled: false
+
+# #=============================== lint ==========================================
+# # Lint/HandleExceptions checks for rescue blocks with no body and generates
+# # a 'Do not suppress exceptions' message when found.
+# Lint/HandleExceptions:
+#   Exclude:
+#     - bin/**/* # This is a common practice inside the bin folder so it is disabled.
+#
+# #=============================== layout ========================================
+# # Layout/AlignParameters checks the alignment of parameters in multiline method calls.
+# #
+# #     Alternative (with_fixed_indentation)                  Default (with_first_parameter)
+# #     ------------------------------------     vs     ------------------------------
+# #     method_call(a,                                  method_call(a,
+# #       b)                                                        b)
+# #
+# # We choose fixed as it is less whitespace at the front of the line.
+# Layout/AlignParameters:
+#   EnforcedStyle: with_fixed_indentation # with_first_parameter is the default
+#
+# # Layout/EmptyLinesAroundArguments is temporarily disabled since it is buggy in rubocop.
+# Layout/EmptyLinesAroundArguments:
+#   Enabled: false
+#
+# # Layout/MultilineMethodCallIndentation checks the indentation of chained method calls.  rubocop defaults to the 'aligned'
+# #
+# #   Default (aligned)
+# #   ------------------------------------------------------------------------------------------------------------------------
+# #   SomeReallyExceptionallyLongClassName.some_really_exceptionally_long_method_number_1(plus_variable_one, variable_two_...)
+# #                                       .some_really_exceptionally_long_method_number_2(plus_variable_one, variable_two_...)
+# #
+# # The default can easily cause line length length violations (particularly with ActiveRecord queries) and it wastes alot of white
+# # space at the beginning of the line. We like 'indented' which is more compact, but uses an extra line.
+# # It has the added benefit of consistently orienting each method call directly under the object that is receiving the message,
+# # which is more readable.
+# Layout/MultilineMethodCallIndentation:
+#   EnforcedStyle: indented # aligned is the default
+#
+# # Layout/SpaceAroundEqualsInParameterDefault checks for spaces around the '=' sign in method parameter lists.  no_space has been
+# # chosen for compactness.
+# #
+# #   Alternative (no_space)                Default (space)
+# #   ----------------------          -----------------------
+# #   def the_method(foo=1)     vs    def the_method(foo = 1)
+# Layout/SpaceAroundEqualsInParameterDefault:
+#   EnforcedStyle: no_space
